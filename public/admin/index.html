@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1A120D">
+<title>Gestion — NANYÉ</title>
+<link rel="icon" href="../images/logo-nanye.jpg" type="image/jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body class="adm-body">
+
+<a class="skip-link" href="#admView">Aller au contenu</a>
+
+<div class="notif" id="notif" role="status" aria-live="polite">
+  <div class="notif-icon"><i class="ti ti-check" aria-hidden="true"></i></div>
+  <div><div class="notif-txt" id="notif-txt"></div><div class="notif-sub" id="notif-sub"></div></div>
+</div>
+
+<!-- ÉCRAN DE CONNEXION / ACCÈS REFUSÉ -->
+<div class="adm-gate" id="admGate" hidden>
+  <div class="adm-gate-card">
+    <img src="../images/logo-nanye.jpg" alt="NANYÉ" class="adm-gate-logo" width="444" height="207">
+    <p class="adm-gate-kicker">Espace de gestion</p>
+
+    <form id="gateLogin" class="form" novalidate>
+      <h1 class="adm-gate-title">Connexion</h1>
+      <div class="field"><label for="gEmail">Email</label><input class="input" id="gEmail" name="email" type="email" autocomplete="username" required maxlength="254"></div>
+      <div class="field"><label for="gPassword">Mot de passe</label><input class="input" id="gPassword" name="password" type="password" autocomplete="current-password" required maxlength="128"></div>
+      <p class="form-error" role="alert" hidden></p>
+      <button class="btn-primary btn-block" type="submit">Se connecter</button>
+    </form>
+
+    <div id="gateDenied" hidden>
+      <h1 class="adm-gate-title">Accès réservé</h1>
+      <p class="adm-gate-text">Ce compte client n'a pas accès à l'espace de gestion de la boutique.</p>
+      <div class="adm-gate-actions">
+        <a class="btn-primary btn-block" href="../index.html#account">Aller à mon espace client</a>
+        <button class="btn-ghost btn-block" type="button" onclick="logout()">Changer de compte</button>
+      </div>
+    </div>
+
+    <p class="adm-gate-error" id="gateOffline" role="alert" hidden></p>
+    <a class="adm-gate-back" href="../index.html">← Retour à la boutique</a>
+  </div>
+</div>
+
+<!-- APPLICATION -->
+<div class="adm-shell" id="admApp" hidden>
+  <aside class="adm-side" id="admSide" aria-label="Navigation de gestion">
+    <div class="adm-brand">
+      <img src="../images/logo-nanye.jpg" alt="NANYÉ" width="444" height="207">
+      <span>Gestion</span>
+    </div>
+    <nav class="adm-nav">
+      <a href="#overview" data-view="overview"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Vue d'ensemble</a>
+      <a href="#orders" data-view="orders"><i class="ti ti-receipt" aria-hidden="true"></i>Commandes<span class="adm-nav-count" id="navToProcess" hidden></span></a>
+      <a href="#products" data-view="products"><i class="ti ti-package" aria-hidden="true"></i>Produits</a>
+      <a href="#stock" data-view="stock"><i class="ti ti-stack-2" aria-hidden="true"></i>Stocks<span class="adm-nav-count adm-nav-warn" id="navStock" hidden></span></a>
+      <a href="#customers" data-view="customers" data-role="admin"><i class="ti ti-users" aria-hidden="true"></i>Clients</a>
+      <a href="#settings" data-view="settings"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i>Réglages</a>
+    </nav>
+    <div class="adm-side-foot">
+      <div class="adm-me">
+        <span class="adm-me-name" id="meName"></span>
+        <span class="adm-me-role" id="meRole"></span>
+      </div>
+      <a class="adm-side-link" href="../index.html" target="_blank" rel="noopener"><i class="ti ti-external-link" aria-hidden="true"></i>Voir la boutique</a>
+      <button class="adm-side-link" type="button" onclick="logout()"><i class="ti ti-logout" aria-hidden="true"></i>Se déconnecter</button>
+    </div>
+  </aside>
+  <div class="adm-scrim" id="admScrim" onclick="toggleSide(false)" hidden></div>
+
+  <div class="adm-main-wrap">
+    <header class="adm-top">
+      <button class="adm-menu-btn" type="button" onclick="toggleSide(true)" aria-label="Ouvrir la navigation" aria-controls="admSide"><i class="ti ti-menu-2"></i></button>
+      <span class="adm-top-title" id="topTitle">Vue d'ensemble</span>
+      <span class="adm-demo-flag" id="demoFlag" hidden>Paiements simulés</span>
+    </header>
+    <main class="adm-main" id="admView" tabindex="-1" aria-live="polite"></main>
+  </div>
+</div>
+
+<!-- DÉTAIL (commande ou client) -->
+<div class="adm-drawer-scrim" id="drawerScrim" hidden onclick="closeDrawer()"></div>
+<aside class="adm-drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden>
+  <div class="adm-drawer-head">
+    <div><p class="adm-drawer-kicker" id="drawerKicker"></p><h2 class="adm-drawer-title" id="drawerTitle"></h2></div>
+    <button class="cart-close" type="button" onclick="closeDrawer()" aria-label="Fermer"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="adm-drawer-body" id="drawerBody"></div>
+</aside>
+
+<!-- ÉDITION PRODUIT -->
+<dialog class="dialog dialog-wide" id="productEditor" aria-labelledby="peTitle">
+  <form id="productForm" class="form" novalidate>
+    <div class="dialog-hdr">
+      <h2 class="dialog-title" id="peTitle">Produit</h2>
+      <button class="cart-close" type="button" onclick="document.getElementById('productEditor').close()" aria-label="Fermer"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="form-row">
+      <div class="field"><label for="peName">Nom</label><input class="input" id="peName" name="name" required minlength="2" maxlength="120"></div>
+      <div class="field"><label for="peSlug">Identifiant (URL)</label><input class="input" id="peSlug" name="slug" required pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="80" placeholder="moutarde-citron"><span class="field-hint" id="peSlugHint">Lettres minuscules, chiffres et tirets. Non modifiable ensuite.</span></div>
+    </div>
+    <div class="form-row form-row-3">
+      <div class="field"><label for="peCategory">Catégorie</label>
+        <select class="input" id="peCategory" name="category"><option value="naturelle">Naturelle</option><option value="epice">Épicé</option><option value="herbes">Herbes</option><option value="coffrets">Coffrets</option></select></div>
+      <div class="field"><label for="peStatus">Statut</label>
+        <select class="input" id="peStatus" name="status"><option value="available">En vente</option><option value="coming_soon">Bientôt</option><option value="archived">Retiré du catalogue</option></select></div>
+      <div class="field"><label for="peFormat">Format</label><input class="input" id="peFormat" name="format" maxlength="40" value="200 g"></div>
+    </div>
+    <div class="form-row form-row-3">
+      <div class="field"><label for="pePrice">Prix (FCFA)</label><input class="input" id="pePrice" name="price_xof" type="number" min="0" max="10000000" step="5" required></div>
+      <div class="field"><label for="peStock">Stock</label><input class="input" id="peStock" name="stock" type="number" min="0" step="1" required></div>
+      <div class="field"><label for="peThreshold">Alerte stock bas</label><input class="input" id="peThreshold" name="low_stock_threshold" type="number" min="0" step="1" required></div>
+    </div>
+    <div class="field"><label for="peTagline">Accroche</label><input class="input" id="peTagline" name="tagline" maxlength="200"></div>
+    <div class="field"><label for="peDesc">Description courte <span class="field-opt">(cartes produit)</span></label><textarea class="input" id="peDesc" name="description" rows="2" maxlength="400"></textarea></div>
+    <div class="field"><label for="peLong">Description complète <span class="field-opt">(fiche produit)</span></label><textarea class="input" id="peLong" name="long_description" rows="4" maxlength="4000"></textarea></div>
+    <div class="field"><label for="peImages">Images <span class="field-opt">(une par ligne, la première est la principale)</span></label><textarea class="input" id="peImages" name="images" rows="3" placeholder="images/product-hero.jpg"></textarea><span class="field-hint">Chemin dans le dossier <code>images/</code> du site, ou adresse https.</span></div>
+    <p class="form-error" role="alert" hidden></p>
+    <div class="dialog-actions">
+      <button class="btn-ghost" type="button" onclick="document.getElementById('productEditor').close()">Annuler</button>
+      <button class="btn-primary" type="submit">Enregistrer</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- CONFIRMATION -->
+<dialog class="dialog" id="confirmDialog" aria-labelledby="cfTitle">
+  <form method="dialog" class="form">
+    <h2 class="dialog-title" id="cfTitle"></h2>
+    <p class="form-hint" id="cfText"></p>
+    <div class="field" id="cfNoteField" hidden><label for="cfNote">Note interne <span class="field-opt">(facultative)</span></label><textarea class="input" id="cfNote" rows="2" maxlength="300"></textarea></div>
+    <div class="dialog-actions">
+      <button class="btn-ghost" value="cancel">Annuler</button>
+      <button class="btn-primary" id="cfOk" value="ok">Confirmer</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="../config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

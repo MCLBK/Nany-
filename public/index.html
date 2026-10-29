@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="NANYÉ — Moutarde Africaine Premium. La tradition devient chic. Produite artisanalement au Bénin à partir de graines de néré fermentées.">
+<meta name="theme-color" content="#1A120D">
+<meta property="og:title" content="NANYÉ — La tradition devient chic">
+<meta property="og:description" content="Moutarde africaine premium, artisanale, du Bénin. Livraison internationale.">
+<meta property="og:type" content="website">
+<title>NANYÉ — La tradition devient chic</title>
+<link rel="icon" href="images/logo-nanye.jpg" type="image/jpeg">
+<!-- Icônes chargées sans bloquer le démarrage du site (CDN tiers parfois lent) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css"></noscript>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap"></noscript>
+<link rel="preload" as="image" href="images/bg-hero-ustensiles.jpg">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="home">
+
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<!-- TOAST NOTIFICATION -->
+<div class="notif" id="notif" role="status" aria-live="polite">
+  <div class="notif-icon"><i class="ti ti-check" aria-hidden="true"></i></div>
+  <div>
+    <div class="notif-txt" id="notif-txt">Ajouté au panier</div>
+    <div class="notif-sub" id="notif-sub">Moutarde NANYÉ · Naturelle</div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="handleOverlay(event)" aria-hidden="true">
+  <aside class="cart-sidebar" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+    <div class="cart-header">
+      <h2 class="cart-title" id="cartTitle">Votre panier</h2>
+      <button class="cart-close" id="cartClose" onclick="closeCart()" aria-label="Fermer le panier"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span class="cart-total-lbl">Total</span>
+        <span class="cart-total-amt" id="cartTotal">0 FCFA</span>
+      </div>
+      <p class="cart-note" id="cartNote">Livraison et montant définitif confirmés à l'étape suivante.</p>
+      <button class="checkout-btn" id="checkoutBtn" onclick="goToCheckout()" disabled>Passer commande <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+      <div class="pay-methods">
+        <span class="pm-label">Accepté</span>
+        <span class="pay-b">Stripe</span>
+        <span class="pay-b">Flutterwave</span>
+        <span class="pay-b">CinetPay</span>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- NAVIGATION -->
+<header class="site-header" id="mainNav">
+  <a class="nav-logo" href="#home" aria-label="NANYÉ — Accueil">
+    <img src="images/logo-nanye.jpg" alt="NANYÉ" class="nav-logo-img" width="444" height="207">
+  </a>
+  <nav aria-label="Navigation principale">
+    <ul class="nav-links">
+      <li><a href="#shop" data-nav="shop product">Boutique</a></li>
+      <li><a href="#story" data-nav="story">Notre histoire</a></li>
+      <li><a href="#recipes" data-nav="recipes">Recettes</a></li>
+      <li><a href="#distribution" data-nav="distribution">Distribution</a></li>
+    </ul>
+  </nav>
+  <div class="nav-actions">
+    <a class="nav-account" href="#account" data-nav="account"><i class="ti ti-user" aria-hidden="true"></i><span>Mon compte</span></a>
+    <button class="btn-cart" onclick="openCart()" aria-label="Ouvrir le panier">
+      <i class="ti ti-shopping-bag" aria-hidden="true"></i>
+      <span class="btn-cart-lbl">Panier</span>
+      <span class="cart-badge" id="cartCount">0</span>
+    </button>
+    <button class="nav-mobile-menu" id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+      <i class="ti ti-menu-2"></i>
+    </button>
+  </div>
+</header>
+
+<!-- MODE DÉMONSTRATION (paiements simulés) -->
+<p class="demo-banner" id="demoBanner" role="note" hidden>Boutique en démonstration : les paiements sont simulés, aucune somme n'est débitée.</p>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#shop" data-nav="shop product">Boutique</a>
+  <a href="#story" data-nav="story">Notre histoire</a>
+  <a href="#recipes" data-nav="recipes">Recettes</a>
+  <a href="#distribution" data-nav="distribution">Distribution</a>
+  <div class="mobile-menu-footer">
+    <a href="#account" data-nav="account"><i class="ti ti-user" aria-hidden="true"></i>Mon compte</a>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ═══════════════════════════════════════ HOME ════════════════════════════════════════ -->
+<div class="page active" id="page-home" data-title="NANYÉ — La tradition devient chic">
+
+  <!-- HERO — fond : images/bg-hero-ustensiles.jpg -->
+  <section class="hero">
+    <div class="sc">
+      <div class="hero-content">
+        <div class="eyebrow"><span class="eline"></span><span class="etxt">Moutarde africaine premium — Bénin</span></div>
+        <h1 class="hero-title">La tradition<br><em>devient chic.</em></h1>
+        <p class="hero-sub">NANYÉ réinvente l'afitin — un héritage culinaire millénaire — dans une expérience gastronomique haut de gamme, contemporaine et délicieusement authentique.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="#shop">Découvrir la collection <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+          <a class="btn-ghost" href="#story">Notre histoire</a>
+        </div>
+        <dl class="hero-stats">
+          <div><dt class="stat-lbl">Naturel &amp; artisanal</dt><dd class="stat-num">100%</dd></div>
+          <div><dt class="stat-lbl">Pays livrés</dt><dd class="stat-num">12+</dd></div>
+          <div><dt class="stat-lbl">Note clients</dt><dd class="stat-num">4.9<span class="stat-unit">/5</span></dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- REASSURANCE -->
+  <div class="strip">
+    <ul class="sc strip-list">
+      <li class="strip-item"><i class="ti ti-flask" aria-hidden="true"></i>Fermentation naturelle 72 h</li>
+      <li class="strip-item"><i class="ti ti-circle-check" aria-hidden="true"></i>Sans conservateurs</li>
+      <li class="strip-item"><i class="ti ti-map-pin" aria-hidden="true"></i>Artisanal, Bénin</li>
+      <li class="strip-item"><i class="ti ti-world" aria-hidden="true"></i>Expédition internationale</li>
+    </ul>
+  </div>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="section products-section">
+    <div class="sc">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow"><span class="eline"></span><span class="etxt">Collection signature</span></div>
+          <h2 class="section-title">Nos créations</h2>
+        </div>
+        <a class="link-arr" href="#shop">Voir la boutique <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+      </div>
+      <div class="products-grid" id="homeProducts" aria-busy="true"></div>
+    </div>
+  </section>
+
+  <!-- STORY / BRAND SECTION -->
+  <section class="section story-section">
+    <div class="sc">
+      <div class="split">
+        <figure class="story-figure">
+          <img src="images/product-ingredients.jpg" alt="Pot NANYÉ entouré de piment, ail et graines de moutarde" class="story-photo" loading="lazy">
+          <figcaption class="story-img-accent">
+            <span class="sv-num">3000</span>
+            <span class="sv-numlbl">ans d'héritage culinaire africain, réinventé pour le monde</span>
+          </figcaption>
+        </figure>
+        <div class="split-content">
+          <div class="eyebrow"><span class="eline"></span><span class="etxt">Notre héritage</span></div>
+          <h2 class="section-title">L'afitin, <em>réinventé</em></h2>
+          <p class="body-text">Depuis des millénaires, l'afitin — produit par la fermentation naturelle des graines de néré — est le secret des grandes cuisines d'Afrique de l'Ouest. Umami africain par excellence, il transforme chaque plat en expérience.</p>
+          <blockquote class="story-quote">« Nous ne créons pas simplement une moutarde. Nous réinventons un héritage pour le monde entier. »</blockquote>
+          <p class="body-text">NANYÉ capture cette essence ancestrale et la reconditionne dans une expérience premium, élégante et internationale — sans jamais trahir l'authenticité qui la rend unique.</p>
+          <a class="link-arr" href="#story">Lire notre histoire <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIFESTYLE -->
+  <section class="section lifestyle-section">
+    <div class="sc">
+      <div class="split split-reverse">
+        <figure class="lifestyle-figure">
+          <img src="images/lifestyle.jpg" alt="Une cliente présente un pot de moutarde NANYÉ" class="lifestyle-photo" loading="lazy">
+        </figure>
+        <div class="split-content">
+          <div class="eyebrow"><span class="eline"></span><span class="etxt">Adopté par des milliers de gourmets</span></div>
+          <h2 class="section-title">Goûtez la différence</h2>
+          <p class="body-text">NANYÉ se distingue immédiatement : une texture unique, un profil aromatique d'une profondeur exceptionnelle, un umami africain qui transforme instantanément n'importe quel plat.</p>
+          <ul class="lifestyle-features">
+            <li class="lf-item"><span class="lf-title">100% naturel</span><span class="lf-sub">Aucun additif, aucun conservateur</span></li>
+            <li class="lf-item"><span class="lf-title">72 h de fermentation</span><span class="lf-sub">Méthode ancestrale respectée</span></li>
+            <li class="lf-item"><span class="lf-title">Livraison internationale</span><span class="lf-sub">12+ pays · Expédition 48 h</span></li>
+          </ul>
+          <a class="btn-primary" href="#shop">Commander maintenant <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INGREDIENTS — fond : images/bg-motif-legumes.jpg -->
+  <section class="section section-cream ingr-section">
+    <div class="sc">
+      <div class="section-head section-head-stack">
+        <div class="eyebrow"><span class="eline"></span><span class="etxt">Composition</span></div>
+        <h2 class="section-title">Des ingrédients purs</h2>
+        <p class="body-text section-lead">Quatre engagements, sans exception, pour chaque pot qui quitte notre atelier.</p>
+      </div>
+      <ol class="ingr-grid">
+        <li class="ingr-card">
+          <span class="ingr-num">01</span>
+          <h3 class="ingr-name">Graines de néré</h3>
+          <p class="ingr-desc">Sélectionnées à la main, issues de forêts naturelles du Bénin. Base nutritive exceptionnelle.</p>
+        </li>
+        <li class="ingr-card">
+          <span class="ingr-num">02</span>
+          <h3 class="ingr-name">Fermentation lente</h3>
+          <p class="ingr-desc">72 heures minimum de fermentation naturelle pour développer la complexité aromatique unique.</p>
+        </li>
+        <li class="ingr-card">
+          <span class="ingr-num">03</span>
+          <h3 class="ingr-name">Zéro additif</h3>
+          <p class="ingr-desc">Sans conservateurs, sans colorants, sans exhausteurs. La pureté comme philosophie absolue.</p>
+        </li>
+        <li class="ingr-card">
+          <span class="ingr-num">04</span>
+          <h3 class="ingr-name">Recette ancestrale</h3>
+          <p class="ingr-desc">Formule transmise de génération en génération, réinterprétée avec exigence contemporaine.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section testi-section">
+    <div class="sc">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow"><span class="eline"></span><span class="etxt">Témoignages</span></div>
+          <h2 class="section-title">Ce qu'ils en disent</h2>
+        </div>
+        <p class="testi-score"><span class="testi-score-num">4.9</span> sur 5 · 248 avis</p>
+      </div>
+      <div class="testi-grid">
+        <blockquote class="testi-card">
+          <div class="stars" aria-label="5 étoiles sur 5"><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i></div>
+          <p class="testi-txt">« Un produit qui m'a reconnecté avec les saveurs de mon enfance. L'emballage est raffiné, le goût profond et authentique. NANYÉ est une révélation. »</p>
+          <footer class="testi-author">
+            <div class="t-avatar t-av1" aria-hidden="true">AK</div>
+            <div><cite class="t-name">Aminata Koné</cite><div class="t-loc">Paris, France</div></div>
+          </footer>
+        </blockquote>
+        <blockquote class="testi-card">
+          <div class="stars" aria-label="5 étoiles sur 5"><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i></div>
+          <p class="testi-txt">« Je suis chef cuisinier à Abidjan et j'utilise NANYÉ en gastronomie. C'est le seul produit africain qui répond à mes exigences de qualité. »</p>
+          <footer class="testi-author">
+            <div class="t-avatar t-av2" aria-hidden="true">DT</div>
+            <div><cite class="t-name">David Touré</cite><div class="t-loc">Abidjan, Côte d'Ivoire</div></div>
+          </footer>
+        </blockquote>
+        <blockquote class="testi-card">
+          <div class="stars" aria-label="5 étoiles sur 5"><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i></div>
+          <p class="testi-txt">« Je commande depuis New York et la livraison est impeccable. NANYÉ a réussi à me faire ressentir l'Afrique à des milliers de kilomètres. »</p>
+          <footer class="testi-author">
+            <div class="t-avatar t-av3" aria-hidden="true">NB</div>
+            <div><cite class="t-name">Nadia Bah</cite><div class="t-loc">New York, États-Unis</div></div>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA — fond : images/bg-vague-bois.jpg (la vague se prolonge dans le footer) -->
+  <section class="cta-section">
+    <div class="sc cta-content">
+      <div class="eyebrow eyebrow-center"><span class="eline"></span><span class="etxt">Rejoignez l'expérience</span><span class="eline"></span></div>
+      <h2 class="cta-title">Goûtez <em>l'héritage.</em></h2>
+      <p class="cta-sub">Rejoignez des milliers de gourmets qui ont redécouvert le plaisir de la cuisine africaine premium avec NANYÉ.</p>
+      <div class="cta-actions">
+        <a class="btn-dark" href="#shop">Commander maintenant <i class="ti ti-arrow-right" aria-hidden="true"></i></a>
+        <a class="btn-outline-dark" href="#distribution">Devenir revendeur</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════ SHOP ════════════════════════════════════════ -->
+<div class="page" id="page-shop" data-title="Boutique — NANYÉ">
+  <div class="sc page-wrap">
+    <header class="page-head">
+      <div>
+        <div class="eyebrow"><span class="eline"></span><span class="etxt">Collection complète</span></div>
+        <h1 class="page-title">La boutique NANYÉ</h1>
+        <p class="page-lead">Chaque pot, une expérience. Notre gamme signature de moutardes africaines premium.</p>
+      </div>
+    </header>
+    <div class="shop-toolbar">
+      <div class="filters" role="group" aria-label="Filtrer les produits">
+        <button class="f-btn active" data-filter="all" aria-pressed="true" onclick="setFilter(this)">Tous</button>
+        <button class="f-btn" data-filter="naturelle" aria-pressed="false" onclick="setFilter(this)">Naturelle</button>
+        <button class="f-btn" data-filter="epice" aria-pressed="false" onclick="setFilter(this)">Épicé</button>
+        <button class="f-btn" data-filter="herbes" aria-pressed="false" onclick="setFilter(this)">Herbes</button>
+        <button class="f-btn" data-filter="coffrets" aria-pressed="false" onclick="setFilter(this)">Coffrets</button>
+      </div>
+      <p class="shop-count" id="shopCount" aria-live="polite">3 produits</p>
+    </div>
+    <p class="notice" id="shopNotice" role="status" hidden></p>
+    <div class="shop-grid" id="shopGrid" aria-busy="true"></div>
+    <div class="empty-state" id="shopEmpty" hidden>
+      <p class="empty-title">Aucun produit dans cette catégorie pour le moment.</p>
+      <p class="empty-sub">Nos coffrets arrivent bientôt. En attendant, découvrez toute la collection.</p>
+      <button class="btn-ghost" onclick="setFilter(document.querySelector('.f-btn[data-filter=all]'))">Voir tous les produits</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ PRODUCT DETAIL ══════════════════════════════ -->
+<div class="page" id="page-product" data-title="Produit — NANYÉ">
+  <div class="sc page-wrap">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a class="bc-item" href="#home">Accueil</a>
+      <span class="bc-sep" aria-hidden="true">/</span>
+      <a class="bc-item" href="#shop">Boutique</a>
+      <span class="bc-sep" aria-hidden="true">/</span>
+      <span class="bc-cur" aria-current="page" id="pdCrumb">Moutarde Naturelle</span>
+    </nav>
+    <div class="empty-state" id="pdMissing" hidden>
+      <p class="empty-title">Ce produit est introuvable.</p>
+      <p class="empty-sub">Il a peut-être été retiré du catalogue.</p>
+      <a class="btn-ghost" href="#shop">Retour à la boutique</a>
+    </div>
+    <div class="pd-grid" id="pdGrid">
+      <!-- IMAGE COL -->
+      <div class="pd-img-col">
+        <div class="pd-img-main" id="pdImgMain">
+          <img src="images/product-hero.jpg" alt="NANYÉ Moutarde Naturelle" class="pd-main-photo" id="pdMainPhoto">
+        </div>
+        <div class="pd-thumbs" id="pdThumbs"></div>
+      </div>
+      <!-- INFO COL -->
+      <div class="pd-info">
+        <div class="pd-rating">
+          <span class="pd-stars" aria-hidden="true"><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i><i class="ti ti-star"></i></span>
+          <span class="pd-rcount">4.9 · 248 avis</span>
+        </div>
+        <h1 class="pd-title" id="pdTitle">Moutarde Naturelle</h1>
+        <p class="pd-subtitle" id="pdTagline">L'essence de l'afitin, sublimée.</p>
+        <div class="pd-price-row">
+          <span class="pd-price" id="pdPrice">3 500 <span class="pd-curr">FCFA</span></span>
+          <span class="pd-stock" id="pdStock"><span class="dot" aria-hidden="true"></span>En stock · Expédition 48 h</span>
+        </div>
+        <p class="pd-desc" id="pdDesc">Notre moutarde phare. Produite à partir de graines de néré sélectionnées, fermentées naturellement pendant 72 heures selon les méthodes ancestrales du Bénin.</p>
+        <div class="size-lbl">Format</div>
+        <p class="pd-format" id="pdFormat">200 g</p>
+        <div class="qty-row" id="pdBuy">
+          <div class="qty-ctrl" role="group" aria-label="Quantité">
+            <button class="qty-b" onclick="changeQty(-1)" aria-label="Diminuer la quantité"><i class="ti ti-minus"></i></button>
+            <span class="qty-n" id="detailQty" aria-live="polite">1</span>
+            <button class="qty-b" onclick="changeQty(1)" aria-label="Augmenter la quantité"><i class="ti ti-plus"></i></button>
+          </div>
+          <button class="atc-btn" id="pdAdd" onclick="addToCart(event,currentProductSlug,detailQty)">
+            <i class="ti ti-shopping-bag" aria-hidden="true"></i> <span>Ajouter au panier</span>
+          </button>
+        </div>
+        <dl class="pd-features">
+          <div class="pd-feat"><dt class="feat-val"><i class="ti ti-leaf" aria-hidden="true"></i>100% naturel</dt><dd class="feat-lbl">Sans additifs</dd></div>
+          <div class="pd-feat"><dt class="feat-val"><i class="ti ti-map-pin" aria-hidden="true"></i>Artisanal, Bénin</dt><dd class="feat-lbl">Fabriqué localement</dd></div>
+          <div class="pd-feat"><dt class="feat-val"><i class="ti ti-truck-delivery" aria-hidden="true"></i>Livraison 48 h</dt><dd class="feat-lbl">12+ pays</dd></div>
+          <div class="pd-feat"><dt class="feat-val"><i class="ti ti-refresh" aria-hidden="true"></i>Retour 30 jours</dt><dd class="feat-lbl">Satisfaction garantie</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ NOTRE HISTOIRE ══════════════════════════════ -->
+<div class="page" id="page-story" data-title="Notre histoire — NANYÉ">
+  <div class="sc page-wrap">
+    <header class="page-head page-head-center">
+      <div class="eyebrow eyebrow-center"><span class="eline"></span><span class="etxt">Depuis le Bénin</span><span class="eline"></span></div>
+      <h1 class="page-title page-title-xl">L'histoire de NANYÉ</h1>
+      <p class="page-lead">De la forêt béninoise aux tables du monde entier — un voyage culinaire de 3 000 ans.</p>
+    </header>
+
+    <figure class="story-hero-photo-wrap">
+      <img src="images/product-ingredients.jpg" alt="Pot NANYÉ et ingrédients naturels" class="story-hero-photo">
+      <figcaption class="story-hero-caption">Graines de néré · Fermentation naturelle · Bénin</figcaption>
+    </figure>
+
+    <ol class="story-timeline">
+      <li class="timeline-item">
+        <div class="timeline-year">Origines</div>
+        <div class="timeline-content">
+          <h3 class="timeline-title">L'afitin ancestral</h3>
+          <p class="timeline-text">Dans les villages du Bénin et d'Afrique de l'Ouest, les femmes transformaient depuis des millénaires les graines de néré en une poudre aromatique puissante — l'afitin. Condiment universel, source de protéines, symbole d'identité culinaire africaine.</p>
+        </div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-year">La vision</div>
+        <div class="timeline-content">
+          <h3 class="timeline-title">Réinventer l'héritage</h3>
+          <p class="timeline-text">Face à l'effacement progressif de ce savoir-faire ancestral et l'absence de sa représentation dans la gastronomie internationale, NANYÉ naît d'une conviction : l'Afrique mérite sa place sur les tables premium du monde.</p>
+        </div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-year">Le processus</div>
+        <div class="timeline-content">
+          <h3 class="timeline-title">72 heures de perfection</h3>
+          <p class="timeline-text">Chaque lot de NANYÉ suit un processus rigoureux : sélection manuelle des graines, nettoyage, cuisson basse température, fermentation naturelle 72 h minimum, séchage et conditionnement sous atmosphère contrôlée.</p>
+        </div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-year">Aujourd'hui</div>
+        <div class="timeline-content">
+          <h3 class="timeline-title">L'Afrique au monde</h3>
+          <p class="timeline-text">Expédiée dans 12+ pays, NANYÉ est présente sur les tables de chefs étoilés, dans les cuisines des amateurs de gastronomie exigeants, et dans les foyers africains de la diaspora — réunissant mémoire et modernité.</p>
+        </div>
+      </li>
+    </ol>
+
+    <!-- Product CTA in story -->
+    <div class="story-product-cta">
+      <div class="story-product-img-wrap">
+        <img src="images/product-hero.jpg" alt="NANYÉ Moutarde Naturelle" class="story-product-img" loading="lazy">
+      </div>
+      <div class="story-product-text">
+        <div class="eyebrow"><span class="eline"></span><span class="etxt">Disponible maintenant</span></div>
+        <h2 class="story-product-title">Moutarde Naturelle</h2>
+        <p class="body-text">Le goût relevé de la tradition. Artisanale, pure, authentique.</p>
+        <div class="btn-row">
+          <a class="btn-primary" href="#product">Voir le produit</a>
+          <button class="btn-ghost" onclick="addToCart(event,'moutarde-naturelle')"><i class="ti ti-plus" aria-hidden="true"></i> Ajouter au panier</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ RECETTES ════════════════════════════════════ -->
+<div class="page" id="page-recipes" data-title="Recettes — NANYÉ">
+  <!-- En-tête — fond : images/bg-motif-legumes-clair.jpg -->
+  <header class="section-cream recipes-banner">
+    <div class="sc">
+      <div class="eyebrow"><span class="eline"></span><span class="etxt">Inspiration culinaire</span></div>
+      <h1 class="page-title">Recettes NANYÉ</h1>
+      <p class="page-lead">Découvrez comment sublimer vos plats avec la moutarde africaine premium NANYÉ.</p>
+    </div>
+  </header>
+  <div class="sc recipes-wrap">
+    <div class="recipe-grid">
+      <article class="recipe-card">
+        <div class="recipe-meta"><span class="recipe-cat"><i class="ti ti-fish" aria-hidden="true"></i>Poisson</span><span><i class="ti ti-clock" aria-hidden="true"></i>30 min · Facile</span></div>
+        <h2 class="recipe-name">Poisson braisé NANYÉ</h2>
+        <p class="recipe-desc">Marinade de tilapia avec moutarde NANYÉ, citron vert et herbes fraîches. Un classique revisité.</p>
+      </article>
+      <article class="recipe-card">
+        <div class="recipe-meta"><span class="recipe-cat"><i class="ti ti-meat" aria-hidden="true"></i>Viande</span><span><i class="ti ti-clock" aria-hidden="true"></i>45 min · Intermédiaire</span></div>
+        <h2 class="recipe-name">Côtelettes marinées</h2>
+        <p class="recipe-desc">Agneau mariné 24 h dans une sauce NANYÉ au miel et gingembre. Grillé à la perfection.</p>
+      </article>
+      <article class="recipe-card">
+        <div class="recipe-meta"><span class="recipe-cat"><i class="ti ti-salad" aria-hidden="true"></i>Sauce froide</span><span><i class="ti ti-clock" aria-hidden="true"></i>5 min · Très facile</span></div>
+        <h2 class="recipe-name">Vinaigrette africaine</h2>
+        <p class="recipe-desc">Sauce salade à base de NANYÉ, huile de palme douce, vinaigre de vin rouge et échalotes.</p>
+      </article>
+      <article class="recipe-card">
+        <div class="recipe-meta"><span class="recipe-cat"><i class="ti ti-soup" aria-hidden="true"></i>Plat mijoté</span><span><i class="ti ti-clock" aria-hidden="true"></i>1 h 30 · Intermédiaire</span></div>
+        <h2 class="recipe-name">Sauce graine premium</h2>
+        <p class="recipe-desc">La sauce graine traditionnelle revisitée avec une touche de NANYÉ. Profondeur umami inégalée.</p>
+      </article>
+    </div>
+    <div class="recipes-cta">
+      <p class="recipes-cta-txt">Toutes ces recettes se préparent avec la <strong>Moutarde Naturelle</strong>.</p>
+      <a class="btn-primary" href="#product">Commander la Moutarde Naturelle</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ DISTRIBUTION ════════════════════════════════ -->
+<div class="page" id="page-distribution" data-title="Distribution — NANYÉ">
+  <div class="sc page-wrap">
+    <header class="page-head">
+      <div>
+        <div class="eyebrow"><span class="eline"></span><span class="etxt">Partenaires &amp; revendeurs</span></div>
+        <h1 class="page-title">Devenir revendeur</h1>
+        <p class="page-lead">Proposez NANYÉ dans votre restaurant, épicerie fine ou boutique. Rejoignez notre réseau premium.</p>
+      </div>
+    </header>
+    <div class="offer-grid">
+      <article class="offer-card">
+        <span class="ingr-num">01</span>
+        <h2 class="offer-title">Épiceries &amp; boutiques</h2>
+        <p class="offer-text">Intégrez NANYÉ dans votre offre premium. Packaging élégant, produit différenciant, forte valeur ajoutée pour vos clients.</p>
+        <a class="btn-ghost" href="mailto:contact@nanye.com?subject=Partenariat%20%E2%80%94%20%C3%89picerie%20%2F%20boutique"><i class="ti ti-mail" aria-hidden="true"></i> Nous contacter</a>
+      </article>
+      <article class="offer-card">
+        <span class="ingr-num">02</span>
+        <h2 class="offer-title">Restaurants &amp; chefs</h2>
+        <p class="offer-text">Tarifs professionnels, livraison régulière, formats adaptés. NANYÉ est le condiment qui distingue votre cuisine.</p>
+        <a class="btn-ghost" href="mailto:contact@nanye.com?subject=Partenariat%20%E2%80%94%20Restaurant"><i class="ti ti-mail" aria-hidden="true"></i> Nous contacter</a>
+      </article>
+      <article class="offer-card">
+        <span class="ingr-num">03</span>
+        <h2 class="offer-title">Distribution internationale</h2>
+        <p class="offer-text">Importateur ou distributeur international ? Discutons des conditions d'un partenariat exclusif dans votre région.</p>
+        <a class="btn-ghost" href="mailto:contact@nanye.com?subject=Partenariat%20%E2%80%94%20Distribution%20internationale"><i class="ti ti-mail" aria-hidden="true"></i> Nous contacter</a>
+      </article>
+    </div>
+    <p class="offer-note">Vous pouvez aussi nous écrire directement à <a href="mailto:contact@nanye.com">contact@nanye.com</a>. Réponse sous 48 h ouvrées.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ ACCOUNT ═════════════════════════════════════ -->
+<div class="page" id="page-account" data-title="Mon compte — NANYÉ">
+  <div class="sc page-wrap">
+
+    <!-- Visiteur : connexion / inscription -->
+    <div id="accGuest">
+      <header class="page-head">
+        <div class="eyebrow"><span class="eline"></span><span class="etxt">Espace client</span></div>
+        <h1 class="page-title">Mon compte</h1>
+        <p class="page-lead">Connectez-vous pour suivre vos commandes et finaliser vos achats.</p>
+      </header>
+      <p class="notice" id="authNotice" role="status" hidden></p>
+      <div class="auth-grid">
+        <section class="auth-card" aria-labelledby="loginTitle">
+          <h2 class="auth-title" id="loginTitle">Connexion</h2>
+          <form id="loginForm" class="form" novalidate>
+            <div class="field"><label for="loginEmail">Email</label><input class="input" id="loginEmail" name="email" type="email" autocomplete="email" required maxlength="254"></div>
+            <div class="field"><label for="loginPassword">Mot de passe</label><input class="input" id="loginPassword" name="password" type="password" autocomplete="current-password" required maxlength="128"></div>
+            <p class="form-error" role="alert" hidden></p>
+            <button class="btn-primary btn-block" type="submit">Se connecter</button>
+            <button class="link-btn" type="button" onclick="toggleForgot(true)">Mot de passe oublié ?</button>
+          </form>
+          <form id="forgotForm" class="form" novalidate hidden>
+            <p class="form-hint">Indiquez l'email de votre compte : nous vous enverrons un lien pour choisir un nouveau mot de passe.</p>
+            <div class="field"><label for="forgotEmail">Email</label><input class="input" id="forgotEmail" name="email" type="email" autocomplete="email" required maxlength="254"></div>
+            <p class="form-error" role="alert" hidden></p>
+            <p class="form-success" role="status" hidden></p>
+            <button class="btn-primary btn-block" type="submit">Recevoir le lien</button>
+            <button class="link-btn" type="button" onclick="toggleForgot(false)">Retour à la connexion</button>
+          </form>
+        </section>
+        <section class="auth-card" aria-labelledby="registerTitle">
+          <h2 class="auth-title" id="registerTitle">Créer un compte</h2>
+          <form id="registerForm" class="form" novalidate>
+            <div class="field"><label for="regName">Nom complet</label><input class="input" id="regName" name="full_name" autocomplete="name" required minlength="2" maxlength="120"></div>
+            <div class="field"><label for="regEmail">Email</label><input class="input" id="regEmail" name="email" type="email" autocomplete="email" required maxlength="254"></div>
+            <div class="field"><label for="regPassword">Mot de passe</label><input class="input" id="regPassword" name="password" type="password" autocomplete="new-password" required minlength="10" maxlength="128" aria-describedby="regPwdHint"><span class="field-hint" id="regPwdHint">10 caractères minimum.</span></div>
+            <p class="form-error" role="alert" hidden></p>
+            <button class="btn-ghost btn-block" type="submit">Créer mon compte</button>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <!-- Client connecté -->
+    <div class="acc-grid" id="accMember" hidden>
+      <aside class="acc-sidebar">
+        <div class="acc-profile">
+          <div class="acc-avatar" id="accAvatar" aria-hidden="true"></div>
+          <div>
+            <div class="acc-name" id="accName"></div>
+            <div class="acc-email" id="accEmail"></div>
+          </div>
+        </div>
+        <ul class="acc-nav">
+          <li><a class="active" href="#" data-acc="orders"><i class="ti ti-package" aria-hidden="true"></i>Mes commandes</a></li>
+          <li><a href="#" data-acc="profile"><i class="ti ti-user" aria-hidden="true"></i>Mon profil</a></li>
+          <li><a href="#" data-acc="security"><i class="ti ti-shield-lock" aria-hidden="true"></i>Sécurité</a></li>
+          <li class="acc-nav-sep"><a href="#" data-acc="logout"><i class="ti ti-logout" aria-hidden="true"></i>Déconnexion</a></li>
+        </ul>
+      </aside>
+      <div class="acc-content">
+        <header class="acc-intro">
+          <h1 class="acc-heading" id="accHello">Bonjour</h1>
+          <p class="acc-since" id="accSince"></p>
+        </header>
+
+        <!-- Commandes -->
+        <div id="accOrdersView" class="acc-view">
+          <div class="acc-stats">
+            <div class="acc-stat"><div class="acc-stat-lbl">Commandes payées</div><div class="acc-stat-num" id="accStatOrders">—</div></div>
+            <div class="acc-stat"><div class="acc-stat-lbl">Total de vos achats</div><div class="acc-stat-num"><span id="accStatSpent">—</span> <span class="acc-stat-unit">FCFA</span></div></div>
+            <div class="acc-stat"><div class="acc-stat-lbl">En cours</div><div class="acc-stat-num" id="accStatActive">—</div></div>
+          </div>
+          <section class="acc-card">
+            <div class="acc-card-hdr"><h2 class="acc-card-title">Mes commandes</h2></div>
+            <div class="acc-card-body" id="accOrders"><p class="loading">Chargement…</p></div>
+          </section>
+        </div>
+
+        <!-- Profil -->
+        <div id="accProfileView" class="acc-view" hidden>
+          <form id="profileForm" class="acc-card form" novalidate>
+            <div class="acc-card-hdr"><h2 class="acc-card-title">Informations personnelles</h2></div>
+            <div class="acc-card-body form">
+              <div class="form-row">
+                <div class="field"><label for="pfName">Nom complet</label><input class="input" id="pfName" name="full_name" autocomplete="name" required minlength="2" maxlength="120"></div>
+                <div class="field"><label for="pfPhone">Téléphone</label><input class="input" id="pfPhone" name="phone" type="tel" autocomplete="tel" maxlength="30" placeholder="+229 …"></div>
+              </div>
+              <div class="field"><label for="pfEmail">Email</label><input class="input" id="pfEmail" type="email" disabled><span class="field-hint">L'email sert d'identifiant de connexion et ne peut pas être modifié ici.</span></div>
+              <h3 class="form-subtitle">Adresse de livraison habituelle</h3>
+              <p class="form-hint">Elle pré-remplit vos prochaines commandes. Vous pourrez toujours la changer au moment de commander.</p>
+              <div class="field"><label for="pfAddress">Adresse</label><input class="input" id="pfAddress" name="default_address" autocomplete="street-address" minlength="4" maxlength="200" placeholder="Rue, quartier, repère"></div>
+              <div class="form-row">
+                <div class="field"><label for="pfCity">Ville</label><input class="input" id="pfCity" name="default_city" autocomplete="address-level2" minlength="2" maxlength="80"></div>
+                <div class="field"><label for="pfCountry">Pays</label><select class="input country-select" id="pfCountry" name="default_country" autocomplete="country"><option value="">—</option></select></div>
+              </div>
+              <p class="form-error" role="alert" hidden></p>
+              <p class="form-success" role="status" hidden></p>
+              <button class="btn-primary" type="submit">Enregistrer</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sécurité -->
+        <div id="accSecurityView" class="acc-view" hidden>
+          <section class="acc-card">
+            <div class="acc-card-hdr"><h2 class="acc-card-title">Mot de passe</h2></div>
+            <form id="passwordForm" class="acc-card-body form" novalidate>
+              <div class="form-row">
+                <div class="field"><label for="pwCurrent">Mot de passe actuel</label><input class="input" id="pwCurrent" name="current_password" type="password" autocomplete="current-password" required maxlength="128"></div>
+                <div class="field"><label for="pwNew">Nouveau mot de passe</label><input class="input" id="pwNew" name="new_password" type="password" autocomplete="new-password" required minlength="10" maxlength="128"></div>
+              </div>
+              <p class="form-hint">10 caractères minimum. Vos autres appareils seront déconnectés.</p>
+              <p class="form-error" role="alert" hidden></p>
+              <p class="form-success" role="status" hidden></p>
+              <button class="btn-ghost" type="submit">Changer le mot de passe</button>
+            </form>
+          </section>
+          <section class="acc-card">
+            <div class="acc-card-hdr"><h2 class="acc-card-title">Appareils et données</h2></div>
+            <div class="acc-card-body form">
+              <div class="setting-row">
+                <div><div class="setting-title">Déconnecter tous les appareils</div><p class="form-hint">Utile si vous vous êtes connecté sur un ordinateur partagé.</p></div>
+                <button class="btn-ghost btn-sm" type="button" onclick="logoutAll()">Tout déconnecter</button>
+              </div>
+              <details class="danger-zone">
+                <summary>Supprimer mon compte</summary>
+                <form id="deleteForm" class="form" novalidate>
+                  <p class="form-hint">Vos données personnelles seront effacées. L'historique de vos commandes est conservé de façon anonyme pour nos obligations comptables.</p>
+                  <div class="field"><label for="delPassword">Confirmez avec votre mot de passe</label><input class="input" id="delPassword" name="password" type="password" autocomplete="current-password" required maxlength="128"></div>
+                  <p class="form-error" role="alert" hidden></p>
+                  <button class="btn-danger" type="submit">Supprimer définitivement</button>
+                </form>
+              </details>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ CHECKOUT ════════════════════════════════════ -->
+<div class="page" id="page-checkout" data-title="Commande — NANYÉ">
+  <div class="sc page-wrap">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a class="bc-item" href="#shop">Boutique</a>
+      <span class="bc-sep" aria-hidden="true">/</span>
+      <span class="bc-cur" aria-current="page">Commande</span>
+    </nav>
+    <header class="page-head">
+      <h1 class="page-title">Livraison &amp; paiement</h1>
+    </header>
+    <div class="empty-state" id="checkoutEmpty" hidden>
+      <p class="empty-title">Votre panier est vide.</p>
+      <p class="empty-sub">Ajoutez un produit pour passer commande.</p>
+      <a class="btn-ghost" href="#shop">Voir la boutique</a>
+    </div>
+    <div class="checkout-grid" id="checkoutGrid">
+      <form id="checkoutForm" class="acc-card form" novalidate>
+        <div class="acc-card-hdr"><h2 class="acc-card-title">Adresse de livraison</h2></div>
+        <div class="acc-card-body form">
+          <div class="form-row">
+            <div class="field"><label for="shName">Nom du destinataire</label><input class="input" id="shName" name="name" autocomplete="name" required minlength="2" maxlength="120"></div>
+            <div class="field"><label for="shPhone">Téléphone</label><input class="input" id="shPhone" name="phone" type="tel" autocomplete="tel" required minlength="6" maxlength="30" placeholder="+229 …"></div>
+          </div>
+          <div class="field"><label for="shAddress">Adresse</label><input class="input" id="shAddress" name="address" autocomplete="street-address" required minlength="4" maxlength="200" placeholder="Rue, quartier, repère"></div>
+          <div class="form-row">
+            <div class="field"><label for="shCity">Ville</label><input class="input" id="shCity" name="city" autocomplete="address-level2" required minlength="2" maxlength="80"></div>
+            <div class="field"><label for="shCountry">Pays</label>
+              <select class="input" id="shCountry" name="country" autocomplete="country" required>
+                <option value="BJ">Bénin</option><option value="BF">Burkina Faso</option><option value="CM">Cameroun</option>
+                <option value="CI">Côte d'Ivoire</option><option value="GA">Gabon</option><option value="GH">Ghana</option>
+                <option value="ML">Mali</option><option value="NE">Niger</option><option value="NG">Nigeria</option>
+                <option value="SN">Sénégal</option><option value="TG">Togo</option><option value="BE">Belgique</option>
+                <option value="CA">Canada</option><option value="FR">France</option><option value="DE">Allemagne</option>
+                <option value="GB">Royaume-Uni</option><option value="CH">Suisse</option><option value="US">États-Unis</option>
+              </select>
+            </div>
+          </div>
+          <label class="check"><input type="checkbox" id="shRemember" checked> <span>Mémoriser cette adresse pour mes prochaines commandes</span></label>
+          <p class="notice notice-inline" id="checkoutPayNotice" hidden></p>
+          <p class="form-error" role="alert" hidden></p>
+          <button class="atc-btn" type="submit" id="checkoutSubmit"><i class="ti ti-lock" aria-hidden="true"></i> <span>Valider et payer</span></button>
+          <p class="form-hint">Paiement sécurisé chez notre prestataire (Mobile Money, carte). Nous ne voyons jamais vos données bancaires.</p>
+        </div>
+      </form>
+      <aside class="acc-card summary-card" aria-labelledby="summaryTitle">
+        <div class="acc-card-hdr"><h2 class="acc-card-title" id="summaryTitle">Récapitulatif</h2></div>
+        <div class="acc-card-body">
+          <div id="checkoutItems"></div>
+          <dl class="summary-rows">
+            <div><dt>Sous-total</dt><dd id="sumSubtotal">—</dd></div>
+            <div><dt>Livraison</dt><dd id="sumShipping">—</dd></div>
+            <div class="summary-total"><dt>Total</dt><dd id="sumTotal">—</dd></div>
+          </dl>
+          <p class="form-hint">Le montant est recalculé et confirmé par nos serveurs.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ ORDER ═══════════════════════════════════════ -->
+<div class="page" id="page-order" data-title="Ma commande — NANYÉ">
+  <div class="sc page-wrap page-narrow">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a class="bc-item" href="#account">Mon compte</a>
+      <span class="bc-sep" aria-hidden="true">/</span>
+      <span class="bc-cur" aria-current="page">Commande</span>
+    </nav>
+    <div id="orderView" aria-live="polite"><p class="loading">Chargement…</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ RESET PASSWORD ══════════════════════════════ -->
+<div class="page" id="page-reset" data-title="Nouveau mot de passe — NANYÉ">
+  <div class="sc page-wrap page-narrow">
+    <header class="page-head">
+      <h1 class="page-title">Nouveau mot de passe</h1>
+      <p class="page-lead">Choisissez un mot de passe d'au moins 10 caractères.</p>
+    </header>
+    <form id="resetForm" class="auth-card form" novalidate>
+      <div class="field"><label for="rsPassword">Nouveau mot de passe</label><input class="input" id="rsPassword" name="new_password" type="password" autocomplete="new-password" required minlength="10" maxlength="128"></div>
+      <div class="field"><label for="rsConfirm">Confirmation</label><input class="input" id="rsConfirm" name="confirm" type="password" autocomplete="new-password" required minlength="10" maxlength="128"></div>
+      <p class="form-error" role="alert" hidden></p>
+      <p class="form-success" role="status" hidden></p>
+      <button class="btn-primary btn-block" type="submit">Enregistrer</button>
+    </form>
+  </div>
+</div>
+
+</main>
+
+<!-- FOOTER (toutes les pages) -->
+<footer class="site-footer">
+  <div class="sc">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="images/logo-nanye.jpg" alt="NANYÉ" class="footer-logo-img" width="444" height="207" loading="lazy">
+        <p class="footer-tagline">« La tradition devient chic. »</p>
+        <p class="footer-desc">Moutarde africaine premium produite artisanalement au Bénin, exportée dans le monde entier.</p>
+        <div class="footer-socials">
+          <a class="soc-btn" href="#" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+          <a class="soc-btn" href="#" aria-label="WhatsApp"><i class="ti ti-brand-whatsapp"></i></a>
+          <a class="soc-btn" href="#" aria-label="X (Twitter)"><i class="ti ti-brand-x"></i></a>
+          <a class="soc-btn" href="#" aria-label="TikTok"><i class="ti ti-brand-tiktok"></i></a>
+        </div>
+      </div>
+      <div>
+        <h2 class="f-col-title">Boutique</h2>
+        <ul class="f-links">
+          <li><a href="#shop">Tous les produits</a></li>
+          <li><a href="#shop">Best-sellers</a></li>
+          <li><a href="#shop">Coffrets cadeaux</a></li>
+          <li><a href="#shop">Packs professionnels</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="f-col-title">Marque</h2>
+        <ul class="f-links">
+          <li><a href="#story">Notre histoire</a></li>
+          <li><a href="#recipes">Recettes &amp; blog</a></li>
+          <li><a href="#">Presse</a></li>
+          <li><a href="#distribution">Distribution</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="f-col-title">Service</h2>
+        <ul class="f-links">
+          <li><a href="#account">Mon compte</a></li>
+          <li><a href="#">Suivi de commande</a></li>
+          <li><a href="#">WhatsApp Business</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 NANYÉ · Cotonou, Bénin</span>
+      <div class="pay-badges">
+        <span class="pay-label-footer"><i class="ti ti-lock" aria-hidden="true"></i>Paiements sécurisés</span>
+        <span class="pay-b">Stripe</span><span class="pay-b">Flutterwave</span><span class="pay-b">CinetPay</span><span class="pay-b">VISA</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- DEMANDE D'ALERTE (produits « Bientôt ») -->
+<dialog class="dialog" id="notifyDialog" aria-labelledby="notifyTitle">
+  <form id="notifyForm" class="form" novalidate>
+    <div class="dialog-hdr">
+      <h2 class="dialog-title" id="notifyTitle">Être averti</h2>
+      <button class="cart-close" type="button" onclick="closeDialog('notifyDialog')" aria-label="Fermer"><i class="ti ti-x"></i></button>
+    </div>
+    <p class="form-hint" id="notifyText">Laissez votre email : nous vous écrirons dès l'ouverture des ventes.</p>
+    <input type="hidden" name="product_slug" id="notifySlug">
+    <div class="field"><label for="notifyEmail">Email</label><input class="input" id="notifyEmail" name="email" type="email" autocomplete="email" required maxlength="254"></div>
+    <p class="form-error" role="alert" hidden></p>
+    <button class="btn-primary btn-block" type="submit">M'avertir</button>
+  </form>
+</dialog>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

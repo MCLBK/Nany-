@@ -1,0 +1,39 @@
+# Secrets et configuration locale
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Bases locales et sauvegardes
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite3
+backups/
+*.dump
+*.sql.gz
+
+# Rapports d'audit générés
+backend/reports/
+
+# Éditeurs et système
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Déploiement
+.vercel/
+.env.production
+*.local.ps1

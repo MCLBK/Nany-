@@ -1,0 +1,2 @@
+# Les dépendances de production sont définies à la racine du projet (utilisées aussi par Vercel).
+-r ../requirements.txt
