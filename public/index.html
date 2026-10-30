@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="NANYÉ — Moutarde Africaine Premium. La tradition devient chic. Produite artisanalement au Bénin à partir de graines de néré fermentées.">
-<meta name="theme-color" content="#1A120D">
+<meta name="theme-color" content="#2A1D16">
 <meta property="og:title" content="NANYÉ — La tradition devient chic">
 <meta property="og:description" content="Moutarde africaine premium, artisanale, du Bénin. Livraison internationale.">
 <meta property="og:type" content="website">
@@ -48,12 +48,7 @@
       </div>
       <p class="cart-note" id="cartNote">Livraison et montant définitif confirmés à l'étape suivante.</p>
       <button class="checkout-btn" id="checkoutBtn" onclick="goToCheckout()" disabled>Passer commande <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-      <div class="pay-methods">
-        <span class="pm-label">Accepté</span>
-        <span class="pay-b">Stripe</span>
-        <span class="pay-b">Flutterwave</span>
-        <span class="pay-b">CinetPay</span>
-      </div>
+      <div class="pay-methods" data-pay-methods hidden></div>
     </div>
   </aside>
 </div>
@@ -61,7 +56,7 @@
 <!-- NAVIGATION -->
 <header class="site-header" id="mainNav">
   <a class="nav-logo" href="#home" aria-label="NANYÉ — Accueil">
-    <img src="images/logo-nanye.jpg" alt="NANYÉ" class="nav-logo-img" width="444" height="207">
+    <img src="images/logo-nanye-blanc.png" alt="NANYÉ" class="nav-logo-img" width="468" height="144">
   </a>
   <nav aria-label="Navigation principale">
     <ul class="nav-links">
@@ -293,8 +288,7 @@
         <button class="f-btn active" data-filter="all" aria-pressed="true" onclick="setFilter(this)">Tous</button>
         <button class="f-btn" data-filter="naturelle" aria-pressed="false" onclick="setFilter(this)">Naturelle</button>
         <button class="f-btn" data-filter="epice" aria-pressed="false" onclick="setFilter(this)">Épicé</button>
-        <button class="f-btn" data-filter="herbes" aria-pressed="false" onclick="setFilter(this)">Herbes</button>
-        <button class="f-btn" data-filter="coffrets" aria-pressed="false" onclick="setFilter(this)">Coffrets</button>
+        <button class="f-btn" data-filter="herbes" aria-pressed="false" onclick="setFilter(this)">Gingembre</button>
       </div>
       <p class="shop-count" id="shopCount" aria-live="polite">3 produits</p>
     </div>
@@ -302,7 +296,7 @@
     <div class="shop-grid" id="shopGrid" aria-busy="true"></div>
     <div class="empty-state" id="shopEmpty" hidden>
       <p class="empty-title">Aucun produit dans cette catégorie pour le moment.</p>
-      <p class="empty-sub">Nos coffrets arrivent bientôt. En attendant, découvrez toute la collection.</p>
+      <p class="empty-sub">De nouvelles saveurs arrivent bientôt. En attendant, découvrez toute la collection.</p>
       <button class="btn-ghost" onclick="setFilter(document.querySelector('.f-btn[data-filter=all]'))">Voir tous les produits</button>
     </div>
   </div>
@@ -340,7 +334,7 @@
         <h1 class="pd-title" id="pdTitle">Moutarde Naturelle</h1>
         <p class="pd-subtitle" id="pdTagline">L'essence de l'afitin, sublimée.</p>
         <div class="pd-price-row">
-          <span class="pd-price" id="pdPrice">3 500 <span class="pd-curr">FCFA</span></span>
+          <span class="pd-price" id="pdPrice">2 500 <span class="pd-curr">FCFA</span></span>
           <span class="pd-stock" id="pdStock"><span class="dot" aria-hidden="true"></span>En stock · Expédition 48 h</span>
         </div>
         <p class="pd-desc" id="pdDesc">Notre moutarde phare. Produite à partir de graines de néré sélectionnées, fermentées naturellement pendant 72 heures selon les méthodes ancestrales du Bénin.</p>
@@ -689,7 +683,7 @@
           <p class="notice notice-inline" id="checkoutPayNotice" hidden></p>
           <p class="form-error" role="alert" hidden></p>
           <button class="atc-btn" type="submit" id="checkoutSubmit"><i class="ti ti-lock" aria-hidden="true"></i> <span>Valider et payer</span></button>
-          <p class="form-hint">Paiement sécurisé chez notre prestataire (Mobile Money, carte). Nous ne voyons jamais vos données bancaires.</p>
+          <p class="form-hint" id="checkoutPayHint" hidden>Paiement sécurisé chez notre prestataire (Mobile Money, carte). Nous ne voyons jamais vos données bancaires.</p>
         </div>
       </form>
       <aside class="acc-card summary-card" aria-labelledby="summaryTitle">
@@ -744,14 +738,14 @@
   <div class="sc">
     <div class="footer-grid">
       <div class="footer-brand">
-        <img src="images/logo-nanye.jpg" alt="NANYÉ" class="footer-logo-img" width="444" height="207" loading="lazy">
+        <img src="images/logo-nanye-blanc.png" alt="NANYÉ" class="footer-logo-img" width="468" height="144" loading="lazy">
         <p class="footer-tagline">« La tradition devient chic. »</p>
         <p class="footer-desc">Moutarde africaine premium produite artisanalement au Bénin, exportée dans le monde entier.</p>
         <div class="footer-socials">
           <a class="soc-btn" href="#" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
-          <a class="soc-btn" href="#" aria-label="WhatsApp"><i class="ti ti-brand-whatsapp"></i></a>
-          <a class="soc-btn" href="#" aria-label="X (Twitter)"><i class="ti ti-brand-x"></i></a>
+          <a class="soc-btn" href="#" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
           <a class="soc-btn" href="#" aria-label="TikTok"><i class="ti ti-brand-tiktok"></i></a>
+          <a class="soc-btn" href="#" aria-label="WhatsApp"><i class="ti ti-brand-whatsapp"></i></a>
         </div>
       </div>
       <div>
@@ -759,7 +753,6 @@
         <ul class="f-links">
           <li><a href="#shop">Tous les produits</a></li>
           <li><a href="#shop">Best-sellers</a></li>
-          <li><a href="#shop">Coffrets cadeaux</a></li>
           <li><a href="#shop">Packs professionnels</a></li>
         </ul>
       </div>
@@ -784,10 +777,7 @@
     </div>
     <div class="footer-bottom">
       <span class="footer-copy">© 2025 NANYÉ · Cotonou, Bénin</span>
-      <div class="pay-badges">
-        <span class="pay-label-footer"><i class="ti ti-lock" aria-hidden="true"></i>Paiements sécurisés</span>
-        <span class="pay-b">Stripe</span><span class="pay-b">Flutterwave</span><span class="pay-b">CinetPay</span><span class="pay-b">VISA</span>
-      </div>
+      <div class="pay-badges" data-pay-methods hidden></div>
     </div>
   </div>
 </footer>

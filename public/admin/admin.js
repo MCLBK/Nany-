@@ -25,7 +25,7 @@ const ACTION_LABELS = {
   preparing: 'Passer en préparation', shipped: 'Marquer comme expédiée', delivered: 'Marquer comme livrée',
   cancelled: 'Annuler la commande', refunded: 'Marquer comme remboursée'
 };
-const CATEGORY = { naturelle: 'Naturelle', epice: 'Épicé', herbes: 'Herbes', coffrets: 'Coffrets' };
+const CATEGORY = { naturelle: 'Naturelle', epice: 'Épicé', herbes: 'Gingembre' };
 const PRODUCT_STATUS = { available: ['En vente', 'st-done'], coming_soon: ['Bientôt', 'st-wait'], archived: ['Retiré', 'st-off'] };
 const ROLE_LABEL = { admin: 'Administrateur', staff: 'Équipe' };
 const VIEWS = {

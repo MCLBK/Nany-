@@ -12,14 +12,15 @@
 .cur{font-size:0.55em;color:var(--muted);font-family:var(--sans);font-weight:500;letter-spacing:0.04em;margin-left:2px}
 
 /* --- Connexion ------------------------------------------------ */
-.adm-gate{min-height:100vh;display:grid;place-items:center;padding:24px 16px}
+/* Motif NANYÉ assombri, carte blanche : même traitement que la connexion client */
+.adm-gate{min-height:100vh;display:grid;place-items:center;padding:24px 16px;background:linear-gradient(rgba(58,38,26,0.35),rgba(58,38,26,0.35)),#73593F url('../images/bg-motif-terre.jpg') center/cover no-repeat}
 .adm-gate-card{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--bw);border-radius:var(--radius);padding:2.25rem 2rem;display:flex;flex-direction:column;gap:1rem}
-.adm-gate-logo{height:46px;width:auto;border-radius:3px;align-self:flex-start}
+.adm-gate-logo{height:40px;width:auto;align-self:flex-start}
 .adm-gate-kicker{font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:500}
 .adm-gate-title{font-family:var(--serif);font-size:32px;font-weight:500;line-height:1.1;margin-bottom:0.25rem}
 .adm-gate-text{color:var(--muted);line-height:1.6;margin-bottom:0.5rem}
 .adm-gate-actions{display:flex;flex-direction:column;gap:10px;margin-top:0.5rem}
-.adm-gate-error{font-size:14px;color:#F0A08A}
+.adm-gate-error{font-size:14px;color:var(--error)}
 .adm-gate-back{font-size:14px;color:var(--muted);text-decoration:none;margin-top:0.5rem}
 .adm-gate-back:hover{color:var(--text)}
 
@@ -27,7 +28,7 @@
 .adm-shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
 .adm-side{position:sticky;top:0;height:100vh;background:var(--surface);border-right:1px solid var(--bw);display:flex;flex-direction:column;padding:1.5rem 1rem 1.25rem;overflow-y:auto}
 .adm-brand{display:flex;align-items:center;gap:12px;padding:0 0.5rem 1.5rem;margin-bottom:1rem;border-bottom:1px solid var(--bw)}
-.adm-brand img{height:34px;width:auto;border-radius:3px}
+.adm-brand img{height:38px;width:auto}
 .adm-brand span{font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);font-weight:500}
 .adm-nav{display:flex;flex-direction:column;gap:2px}
 .adm-nav a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--muted);text-decoration:none;font-size:15px;font-weight:500;transition:background var(--transition),color var(--transition)}
@@ -35,7 +36,7 @@
 .adm-nav a:hover{background:rgba(255,248,240,0.04);color:var(--text)}
 .adm-nav a.active{background:var(--bg);color:var(--text);box-shadow:inset 3px 0 0 var(--gold)}
 .adm-nav a.active i{color:var(--gold)}
-.adm-nav-count{margin-left:auto;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--gold);color:var(--bg);font-size:12px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.adm-nav-count{margin-left:auto;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--gold-fill);color:var(--on-gold);font-size:12px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
 .adm-nav-warn{background:rgba(196,80,40,0.85);color:var(--text)}
 .adm-side-foot{margin-top:auto;padding-top:1.25rem;border-top:1px solid var(--bw);display:flex;flex-direction:column;gap:2px}
 .adm-me{display:flex;flex-direction:column;padding:0 12px 10px}
@@ -77,7 +78,7 @@
 .kpi-value{font-family:var(--sans);font-variant-numeric:tabular-nums;letter-spacing:-0.02em;font-size:32px;font-weight:500;line-height:1.05}
 .kpi-trend{font-size:13px;font-weight:500}
 .kpi-trend.up{color:var(--success-light)}
-.kpi-trend.down{color:#F0A08A}
+.kpi-trend.down{color:var(--error)}
 .kpi-note{font-size:13px;color:var(--muted);line-height:1.45}
 .kpi-link{font-size:13px;color:var(--gold);font-weight:500}
 /* Indicateur principal : posé sur le crème de la charte pour qu'il se lise en premier */
@@ -107,7 +108,7 @@
 .chart{display:flex;align-items:flex-end;gap:12px;height:220px;padding-top:8px}
 .chart-col{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px;min-width:0}
 .chart-val{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;min-height:16px}
-.chart-bar{position:relative;width:100%;max-width:44px;background:rgba(242,195,0,0.35);border-radius:4px 4px 0 0;display:flex;flex-direction:column;overflow:hidden}
+.chart-bar{position:relative;width:100%;max-width:44px;background:rgba(227,188,78,0.35);border-radius:4px 4px 0 0;display:flex;flex-direction:column;overflow:hidden}
 .chart-sim{display:block;width:100%;background:repeating-linear-gradient(135deg,var(--surface3) 0 3px,rgba(183,168,154,0.6) 3px 4px)}
 .chart-col.is-now .chart-bar{background:var(--gold)}
 .chart-col.is-now .chart-val{color:var(--text);font-weight:500}
@@ -153,14 +154,14 @@
 /* Statuts */
 .st{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--radius-pill);font-size:12px;font-weight:500;white-space:nowrap;letter-spacing:0.02em}
 .st::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
-.st-todo{background:rgba(242,195,0,0.13);color:var(--gold)}
+.st-todo{background:rgba(227,188,78,0.13);color:var(--gold)}
 .st-wait{background:rgba(183,168,154,0.13);color:var(--muted)}
-.st-move{background:rgba(212,184,150,0.14);color:#D4B896}
+.st-move{background:rgba(212,184,150,0.14);color:var(--move)}
 .st-done{background:rgba(94,124,65,0.2);color:var(--success-light)}
-.st-off{background:rgba(196,80,40,0.14);color:#F0A08A}
+.st-off{background:rgba(196,80,40,0.14);color:var(--error)}
 .pay{font-size:13px;white-space:nowrap}
 .pay-ok{color:var(--success-light)}
-.pay-ko{color:#F0A08A}
+.pay-ko{color:var(--error)}
 .pay-wait{color:var(--muted)}
 
 /* Barre d'outils */
@@ -170,7 +171,7 @@
 .search .input{padding-left:42px;min-height:44px}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .seg button{height:36px;padding:0 14px;border-radius:var(--radius-pill);border:1px solid var(--bw2);background:transparent;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:all var(--transition)}
-.seg button:hover{color:var(--text);border-color:rgba(255,248,240,0.35)}
+.seg button:hover{color:var(--text);border-color:var(--bw3)}
 .seg button[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
 .pager{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:12px 16px;border-top:1px solid var(--bw);font-size:14px;color:var(--muted)}
 .pager span{margin-right:auto}
@@ -195,8 +196,8 @@
 .pr-price{font-family:var(--sans);font-variant-numeric:tabular-nums;letter-spacing:-0.02em;font-size:17px;font-weight:600;white-space:nowrap}
 .pr-stock{font-size:14px;white-space:nowrap}
 .flag{font-size:12px;font-weight:500;padding:3px 8px;border-radius:4px}
-.flag-out{background:rgba(196,80,40,0.2);color:#F0A08A}
-.flag-low{background:rgba(242,195,0,0.14);color:var(--gold)}
+.flag-out{background:rgba(196,80,40,0.2);color:var(--error)}
+.flag-low{background:rgba(227,188,78,0.14);color:var(--gold)}
 
 /* --- Panneau de détail ---------------------------------------------------- */
 .adm-drawer-scrim{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.55)}
@@ -243,8 +244,8 @@
 .field-opt{font-weight:400;color:var(--muted)}
 .dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:0.5rem}
 .notif.is-error{border-left-color:var(--spicy)}
-.notif.is-error .notif-icon{background:rgba(196,80,40,0.2);color:#F0A08A}
-.adm-demo-flag{font-size:12px;font-weight:500;color:var(--bg);background:var(--gold);padding:4px 10px;border-radius:var(--radius-pill);white-space:nowrap}
+.notif.is-error .notif-icon{background:rgba(196,80,40,0.2);color:var(--error)}
+.adm-demo-flag{font-size:12px;font-weight:500;color:var(--on-gold);background:var(--gold-fill);padding:4px 10px;border-radius:var(--radius-pill);white-space:nowrap}
 
 /* --- Responsive -------------------------------------------------------------- */
 @media(max-width:1100px){

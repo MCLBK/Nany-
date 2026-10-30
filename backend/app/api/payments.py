@@ -85,19 +85,19 @@ SIMULATOR_PAGE = """<!doctype html><html lang="fr"><head><meta charset="utf-8">
 <title>Paiement simulé — NANYÉ</title>
 <style>
 *{{box-sizing:border-box}}body{{margin:0;min-height:100vh;display:grid;place-items:center;padding:16px;
-background:#1A120D;color:#FFF8F0;font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}}
-main{{width:100%;max-width:440px;background:#2A1B14;border:1px solid rgba(255,248,240,.12);border-radius:14px;overflow:hidden}}
-.flag{{background:#F2C300;color:#1A120D;font-size:13px;font-weight:600;padding:10px 24px;letter-spacing:.02em}}
+background:#2A1D16;color:#FFF8F0;font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}}
+main{{width:100%;max-width:440px;background:#38271E;border:1px solid rgba(255,248,240,.12);border-radius:14px;overflow:hidden}}
+.flag{{background:#E3BC4E;color:#2A1D16;font-size:13px;font-weight:600;padding:10px 24px;letter-spacing:.02em}}
 .body{{padding:24px}}h1{{font:400 30px/1.15 Georgia,"Times New Roman",serif;margin:0 0 4px}}
-.ref{{color:#B7A89A;font-size:14px;margin:0 0 20px}}
+.ref{{color:#CDBFB2;font-size:14px;margin:0 0 20px}}
 .line{{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,248,240,.08);font-size:15px}}
 .total{{display:flex;justify-content:space-between;align-items:baseline;padding:16px 0 20px;font-weight:600}}
 .total span:last-child{{font:400 28px Georgia,serif;font-variant-numeric:lining-nums}}
 button{{display:block;width:100%;min-height:50px;border-radius:50px;font:600 14px system-ui,sans-serif;letter-spacing:.06em;
 text-transform:uppercase;margin-top:10px;cursor:pointer}}
-.ok{{background:#F2C300;border:0;color:#1A120D}}.ko{{background:none;border:1px solid rgba(255,248,240,.3);color:#FFF8F0}}
-.cancel{{background:none;border:0;color:#B7A89A;text-transform:none;letter-spacing:0;font-weight:400;text-decoration:underline}}
-p.note{{color:#B7A89A;font-size:13px;margin:16px 0 0}}
+.ok{{background:#E3BC4E;border:0;color:#2A1D16}}.ko{{background:none;border:1px solid rgba(255,248,240,.3);color:#FFF8F0}}
+.cancel{{background:none;border:0;color:#CDBFB2;text-transform:none;letter-spacing:0;font-weight:400;text-decoration:underline}}
+p.note{{color:#CDBFB2;font-size:13px;margin:16px 0 0}}
 </style></head><body><main>
 <div class="flag">Paiement simulé — aucune somme ne sera débitée</div>
 <div class="body"><h1>Paiement</h1><p class="ref">Commande {ref}</p>

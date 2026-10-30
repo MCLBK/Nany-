@@ -36,3 +36,14 @@ def test_backoffice_is_a_separate_noindex_app():
     # L'interface vérifie le rôle pour l'affichage, mais chaque appel reste contrôlé par l'API
     assert "['staff', 'admin'].includes" in js
     assert "credentials: 'include'" in js and "X-CSRF-Token" in js
+
+
+def test_public_catalog_copy_matches_the_brand():
+    html = _read("index.html")
+    assert "Coffret" not in html and ">Herbes<" not in html and ">Gingembre<" in html
+    socials = re.findall(r'class="soc-btn"[^>]*aria-label="([^"]+)"', html)
+    assert sorted(socials) == ["Facebook", "Instagram", "TikTok", "WhatsApp"]
+    # Moyens de paiement : affichés selon la configuration, jamais de marque en dur
+    for brand in ("Stripe", "Flutterwave", "VISA"):
+        assert brand not in html
+    assert "data-pay-methods" in html and "renderPayMethods" in _read("app.js")

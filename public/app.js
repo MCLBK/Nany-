@@ -11,7 +11,7 @@ const API = ((window.NANYE_CONFIG || {}).apiBaseUrl || 'http://localhost:8000/ap
 // Catalogue affiché si l'API est injoignable (consultation seule, achat désactivé)
 const FALLBACK_PRODUCTS = [
   { slug: 'moutarde-naturelle', name: 'Moutarde Naturelle', category: 'naturelle', status: 'available',
-    availability: 'in_stock', max_quantity: 0, price_xof: 3500, format: '200 g',
+    availability: 'in_stock', max_quantity: 0, price_xof: 2500, format: '200 g',
     tagline: "L'essence de l'afitin, sublimée.",
     description: "L'authenticité de l'afitin sublimée. Notes profondes, texture onctueuse, caractère sans compromis.",
     long_description: "Notre moutarde phare. Produite à partir de graines de néré sélectionnées, fermentées naturellement pendant 72 heures selon les méthodes ancestrales du Bénin. Profil aromatique exceptionnel — umami, terreux, légèrement fumé.",
@@ -199,12 +199,22 @@ async function loadCatalog() {
   }
   state.catalogLoaded = true;
   $('demoBanner').hidden = !(state.online && state.shop.payment_simulated);
+  renderPayMethods();
   renderCatalog();
   sanitizeCart();
   renderCart();
   // Rafraîchit la page courante si elle dépend du catalogue (sans remonter en haut)
   const { page, param } = parseHash();
   if (page === 'product' || page === 'checkout') PAGE_HANDLERS[page](param);
+}
+
+// N'affiche que ce qui est réellement disponible : rien hors ligne, la simulation en démonstration
+function renderPayMethods() {
+  const chip = (icon, label) => `<span class="pay-chip"><i class="ti ${icon}" aria-hidden="true"></i>${label}</span>`;
+  const html = !(state.online && state.shop.payment_enabled) ? ''
+    : state.shop.payment_simulated ? chip('ti-flask', 'Paiement simulé, aucun débit')
+    : chip('ti-lock', 'Paiement sécurisé') + chip('ti-device-mobile', 'Mobile Money') + chip('ti-credit-card', 'Carte bancaire');
+  document.querySelectorAll('[data-pay-methods]').forEach(el => { el.innerHTML = html; el.hidden = !html; });
 }
 
 function jarIllustration(p) {
@@ -684,6 +694,7 @@ async function renderCheckout() {
 
   const notice = $('checkoutPayNotice');
   notice.hidden = state.shop.payment_enabled && !state.shop.payment_simulated;
+  $('checkoutPayHint').hidden = !notice.hidden;
   notice.textContent = !state.online ? 'La boutique est momentanément hors ligne. Réessayez dans un instant.'
     : !state.shop.payment_enabled ? 'Le paiement en ligne n\'est pas encore ouvert : votre commande sera enregistrée et réservée, et nous vous recontacterons pour le règlement.'
     : 'Mode démonstration : le paiement est simulé, aucun montant ne sera débité.';

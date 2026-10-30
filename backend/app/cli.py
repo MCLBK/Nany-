@@ -13,6 +13,7 @@ import getpass
 import sys
 from datetime import timedelta
 
+from pydantic import ValidationError
 from sqlalchemy import delete, or_, select
 
 from app.core.config import get_settings
@@ -24,7 +25,7 @@ from app.services.orders import expire_stale_orders
 
 CATALOG = [
     dict(slug="moutarde-naturelle", name="Moutarde Naturelle", category="naturelle", status="available",
-         price_xof=3500, format="200 g", sort_order=1,
+         price_xof=2500, format="200 g", sort_order=1,
          tagline="L'essence de l'afitin, sublimée.",
          description="L'authenticité de l'afitin sublimée. Notes profondes, texture onctueuse, caractère sans compromis.",
          long_description=("Notre moutarde phare. Produite à partir de graines de néré sélectionnées, fermentées "
@@ -44,7 +45,11 @@ def create_admin(email: str, name: str, role: str = "admin") -> None:
     password = getpass.getpass("Mot de passe (10 caractères minimum) : ")
     if password != getpass.getpass("Confirmez le mot de passe : "):
         sys.exit("Les mots de passe ne correspondent pas.")
-    data = RegisterIn(email=email, password=password, full_name=name)  # mêmes règles qu'en ligne
+    try:
+        data = RegisterIn(email=email, password=password, full_name=name)  # mêmes règles qu'en ligne
+    except ValidationError as exc:
+        # Jamais la valeur saisie : seulement le champ et la règle non respectée
+        sys.exit("\n".join(f"{'.'.join(map(str, e['loc']))} : {e['msg']}" for e in exc.errors(include_input=False)))
     with SessionLocal() as db:
         user = db.scalar(select(User).where(User.email == data.email))
         if user:

@@ -23,7 +23,11 @@ nanye/
 │   ├── product-hero.jpg    # Photo produit principale (pot sur fond sombre)
 │   ├── product-ingredients.jpg  # Photo produit avec ingrédients
 │   ├── lifestyle.jpg       # Photo lifestyle / ambassadrice produit
-│   ├── logo-nanye.jpg      # Logo NANYÉ (texte afro-typographique)
+│   ├── logo-nanye-blanc.png # Logo transparent, sur fonds sombres et motif
+│   ├── logo-nanye-or.png   # Logo transparent, sur fonds crème et blancs
+│   ├── logo-nanye.jpg      # Ancien logo sur fond brun (favicon)
+│   ├── bg-motif-terre.jpg  # Motif NANYÉ discret : écrans de connexion
+│   ├── bg-motif-brun.jpg   # Motif NANYÉ marqué : « Goûtez la différence », haut des pages Histoire et Distribution
 │   ├── bg-hero-ustensiles.jpg     # Fond du hero (ustensiles en bois, texte à gauche)
 │   ├── bg-motif-legumes.jpg       # Fond crème motif légumes — section « Composition »
 │   ├── bg-motif-legumes-clair.jpg # Variante plus pâle — en-tête de la page Recettes
@@ -95,12 +99,12 @@ connecte est renvoyé vers son espace. Chaque action est de toute façon vérifi
 ### Palette
 | Rôle | Couleur | Variable |
 |---|---|---|
-| Primary | `#F2C300` | `--gold` |
+| Primary (or adouci) | `#E3BC4E` | `--gold` |
 | Secondary | `#5A3725` | `--brown` |
-| Background | `#1A120D` | `--bg` |
-| Surface | `#2A1B14` | `--surface` |
+| Background | `#2A1D16` | `--bg` |
+| Surface | `#38271E` | `--surface` |
 | Text | `#FFF8F0` | `--text` |
-| Muted | `#B7A89A` | `--muted` |
+| Muted | `#CDBFB2` | `--muted` |
 | Success | `#5E7C41` | `--success` |
 
 ### Typographie
@@ -115,6 +119,9 @@ connecte est renvoyé vers son espace. Chaque action est de toute façon vérifi
 ### Fonds crème
 Les sections claires reprennent le crème des images fournies (`--cream: #FEF8EA`).
 Sur ces fonds, l'accent passe de l'or au brun de la charte (`--brown`), l'or n'y étant pas lisible.
+Boutique, fiche produit, compte, commande, panier, fenêtres et zone de travail de la gestion utilisent
+ces surfaces claires : les jetons y sont redéfinis localement (fin de `styles.css`), les boutons gardent
+l'or via `--gold-fill`.
 
 ### Animations
 Volontairement limitées aux transitions d'interface (survol, panier, toast) ;

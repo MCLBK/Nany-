@@ -224,3 +224,13 @@ def test_profile_optional_fields_can_be_cleared_but_name_cannot(client):
     assert r.status_code == 200 and r.json()["phone"] is None and r.json()["default_city"] is None
     r = client.patch("/api/account/profile", headers=h, json={"full_name": None})
     assert r.status_code == 422 and "Erreur interne" not in r.text
+
+
+def test_create_admin_never_echoes_rejected_password(monkeypatch, capsys):
+    import pytest
+    from app import cli
+    monkeypatch.setattr(cli.getpass, "getpass", lambda prompt="": "Court-Pwd")
+    with pytest.raises(SystemExit) as exc:
+        cli.create_admin("chef@example.com", "Chef")
+    out = str(exc.value) + capsys.readouterr().out
+    assert "password" in out and "Court-Pwd" not in out
