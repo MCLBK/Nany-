@@ -517,7 +517,9 @@ body[data-page="admin"] .site-footer{display:none}
   .split{grid-template-columns:1fr;gap:2.5rem}
   .split-reverse > figure{order:0}
   .story-figure{margin-right:0}
-  .story-photo,.lifestyle-photo{aspect-ratio:4/3}
+  .story-photo{aspect-ratio:4/3}
+  /* Photo entière (format d'origine 4:5), largeur limitée pour ne pas envahir la tablette */
+  .lifestyle-photo{max-width:440px;margin-inline:auto}
   .story-img-accent{right:1rem;bottom:1rem}
   .testi-grid,.offer-grid{grid-template-columns:1fr}
   .section-head{flex-direction:column;align-items:flex-start;gap:1rem}
